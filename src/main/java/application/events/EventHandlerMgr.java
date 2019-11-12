@@ -8,33 +8,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.cloudevents.CloudEvent;
 
 /**
  * Manages registered event handlers.
  */
+@Component
 public class EventHandlerMgr {
     
     private static final Logger logger = Logger.getLogger(EventHandlerMgr.class.getName());
     
-    private static EventHandlerMgr instance;
-    
     private final List<EventHandler> handlers;
     
-    private EventHandlerMgr() {
+    @Autowired(required = true)
+    public EventHandlerMgr() {
         this.handlers = new ArrayList<>();
-    }
-    
-    public static EventHandlerMgr getInstance() {
-        if (instance == null) {
-            synchronized (EventHandlerMgr.class) {
-                if (instance == null) {
-                    instance = new EventHandlerMgr();
-                }
-            }
-        }
-        
-        return instance;
     }
     
     public synchronized List<EventHandler> getRegisteredHandlers() {
